@@ -1,0 +1,32 @@
+{
+  "name": "dales-lab-portal",
+  "version": "0.0.1",
+  "description": "Internal portal for Intranet site",
+  "main": "index.html",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-http-server": "^1.1.0",
+    "angular-route": "^1.6.4",
+    "angular-ui-bootstrap": "^2.5.0",
+    "bootswatch": "^3.3.7",
+    "crypto-js": "^3.1.9-1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "npm install && angular-http-server",
+    "prod": "npm install && angular-http-server -p $PORT",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenygh0st/dales-lab-portal.git"
+  },
+  "author": "Dale Myszewski <dale@daleslab.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greenygh0st/dales-lab-portal/issues"
+  },
+  "homepage": "https://github.com/greenygh0st/dales-lab-portal#readme"
+}
