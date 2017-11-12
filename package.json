@@ -1,6 +1,6 @@
 {
-  "name": "dales-lab-portal",
-  "version": "0.0.1",
+  "name": "bendrocorp-frontend",
+  "version": "1.0.1",
   "description": "Internal portal for Intranet site",
   "main": "index.html",
   "dependencies": {
@@ -21,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/greenygh0st/dales-lab-portal.git"
+    "url": "git+https://github.com/greenygh0st/bendrocorp-frontend.git"
   },
   "author": "Dale Myszewski <dale@daleslab.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/greenygh0st/dales-lab-portal/issues"
+    "url": "https://github.com/greenygh0st/bendrocorp-frontend/issues"
   },
-  "homepage": "https://github.com/greenygh0st/dales-lab-portal#readme"
+  "homepage": "https://github.com/greenygh0st/bendrocorp-frontend#readme"
 }
