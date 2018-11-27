@@ -1,2 +1,2 @@
-# bendrocorp-frontend
-SPA public page for BendroCorp
+# BendroCorp Public Page
+SPA public page for BendroCorp. https://bendrocorp.com
