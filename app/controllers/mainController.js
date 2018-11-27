@@ -1,5 +1,5 @@
-app.controller('baseCtrl', ['$scope', '$rootScope', '$http', '$filter', function($scope, $http, $filter) {
-  $scope.testString = "test string"
+app.controller('baseCtrl', ['$scope', '$rootScope', '$http', '$filter', function($scope, $rootScope, $http, $filter) {
+  $scope.availableJobs = ""
   //go get the system objects
   $scope.fetchUserObject = function ()
   {
@@ -12,6 +12,15 @@ app.controller('baseCtrl', ['$scope', '$rootScope', '$http', '$filter', function
     //           });
   };
 
+  $scope.fetchAvailableJobs = () => {
+    return $http.get('https://api.bendrocorp.com/api/job/hiring')
+    .then((response) => {
+      $scope.availableJobs = response.data.map(x => x.title).join(', ')
+    },(error) => {
+      console.error(error)
+    })
+  }
+
   // fetch the userObject
-  // $scope.fetchUserObject();
+  $scope.fetchAvailableJobs();
 }]);
