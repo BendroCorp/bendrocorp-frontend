@@ -31,7 +31,6 @@ jobs:
     - name: npm install and npm run build
       run: |
         npm install
-        npm run build
     - name: Push to Dokku
       uses: obrassard/action-dokku-push@v1.0.2
       with:
