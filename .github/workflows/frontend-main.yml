@@ -71,7 +71,7 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@0.0.2
       with:
-        args: 'BendroCorp/bendrocorp-frontend has been deployed to the apps server.'
+        args: 'A new docker image has been deployed for BendroCorp/bendrocorp-frontend'
   publish:
     needs: build
 
@@ -103,4 +103,9 @@ jobs:
     
     - name: Apply Deployment
       run: kubectl apply -f ./k8/bendrocorp_frontend_deployment.yml
-
+    - name: Discord Notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@0.0.2
+      with:
+        args: 'BendroCorp/bendrocorp-frontend has been deployed to Kubernetes'
