@@ -41,6 +41,9 @@ jobs:
     
     - name: List files
       run: ls -la
+
+    - name: List k8 files
+      run: ls -la k8/
         
     - name: Build image
       run: docker build . --file Dockerfile --tag $IMAGE_NAME
