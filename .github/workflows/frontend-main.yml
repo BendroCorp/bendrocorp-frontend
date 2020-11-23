@@ -117,6 +117,11 @@ jobs:
     - name: Allow unsecure commands
       run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
         
+    - name: List k8 files
+      run: ls -la k8/
+
+    - name: Cat Deployment
+      run: cat k8/bendrocorp_frontend_deployment.yml
 
     - name: Set up kubectl
       uses: matootie/dokube@v1.3.3
@@ -125,10 +130,10 @@ jobs:
         clusterName: bubble-kube
 
     - name: Apply Service
-      run: kubectl apply -f ./k8/bendrocorp_frontend_service.yml
+      run: kubectl apply -f k8/bendrocorp_frontend_service.yml
     
     - name: Apply Deployment
-      run: kubectl apply -f ./k8/bendrocorp_frontend_deployment.yml
+      run: kubectl apply -f k8/bendrocorp_frontend_deployment.yml
 
     - name: Set Nofication Message
       run: echo ::set-env name=DISCORD_MESSAGE::${{ env.MY_WORKFLOW_VAR }} of BendroCorp/bendrocorp-frontend has been deployed to Kubernetes
