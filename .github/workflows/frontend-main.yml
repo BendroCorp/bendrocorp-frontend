@@ -38,6 +38,9 @@ jobs:
     - name: npm install and npm run build
       run: |
         npm install
+    
+    - name: List files
+      run: ls -la
         
     - name: Build image
       run: docker build . --file Dockerfile --tag $IMAGE_NAME
