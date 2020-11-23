@@ -131,8 +131,6 @@ jobs:
     - name: Allow unsecure commands
       run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
 
-    
-
     - name: Set up kubectl
       uses: matootie/dokube@v1.3.3
       with:
