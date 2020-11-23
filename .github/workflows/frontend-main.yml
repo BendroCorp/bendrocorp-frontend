@@ -6,7 +6,14 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    # branches: [ master ]
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+env:
+  # Name of docker image
+  IMAGE_NAME: bendrocorp-frontend
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,18 +38,66 @@ jobs:
     - name: npm install and npm run build
       run: |
         npm install
-    - name: Push to Dokku
-      uses: obrassard/action-dokku-push@v1.0.2
-      with:
-        # The dokku app's git repository url (in SSH format)
-        dokku_repo: ${{ secrets.dokkuRepo }}
-        # A private SSH key that has push acces to your Dokku instance
-        ssh_key: ${{ secrets.dokkuPrivateKey }}
-        # The branch to be deployed when pushing to Dokku (default: master)
-        deploy_branch: master # optional, default is master
+        
+    - name: Build image
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+    - name: Log into registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+    - name: Push image
+      run: |
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+
+        # Change all uppercase to lowercase
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+        # Strip git ref prefix from version
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+        # Strip "v" prefix from tag name
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+        # Use Docker `latest` tag convention
+        [ "$VERSION" == "master" ] && VERSION=latest
+
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
+
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION
     - name: Discord Notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@0.0.2
       with:
         args: 'BendroCorp/bendrocorp-frontend has been deployed to the apps server.'
+  publish:
+    needs: build
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # steps to push to kube
+    steps:
+    - name: Get Version
+      run: |
+       VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+       # Strip "v" prefix from tag name
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+        # Use Docker `latest` tag convention
+        [ "$VERSION" == "master" ] && VERSION=latest
+
+    - name: Set up kubectl
+      uses: matootie/dokube@v1.3.3
+      with:
+        personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        clusterName: my-fabulous-cluster
+
+    - name: Apply Service
+      run: kubectl apply -f ./k8/bendrocorp_frontend_service.yml
+    
+    - name: Apply Deployment
+      run: kubectl apply -f ./k8/bendrocorp_frontend_deployment.yml
+
