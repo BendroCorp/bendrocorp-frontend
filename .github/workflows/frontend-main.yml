@@ -92,10 +92,19 @@ jobs:
         # Use Docker `latest` tag convention
         [ "$VERSION" == "master" ] && VERSION=latest
 
-        sed -i 's/VERSION_HERE/$VERSION/g' ./k8/bendrocorp_frontend_deployment.yml
+        # sed -i 's/VERSION_HERE/$VERSION/g' ./k8/bendrocorp_frontend_deployment.yml
 
-    - name: Echo version
-      run: echo $VERSION
+    - name: String Replace
+      # You may pin to the exact commit or the version.
+      # uses: bejoistic/str-replace@efbbb67d349eaf509144d4ce1202ed0c6fb3e340
+      uses: bejoistic/str-replace@v1.0.2
+      with:
+        # A regular expression of files to include in our find and replace
+        include: ./k8/bendrocorp_frontend_deployment.yml
+        # The string we want to replace
+        find: VERSION_HERE
+        # The new string to replace with
+        replace: ${{ env.VERSION }}
 
     - name: Set up kubectl
       uses: matootie/dokube@v1.3.3
