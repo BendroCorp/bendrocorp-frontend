@@ -118,7 +118,7 @@ jobs:
       run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
 
     - name: List files
-      run: ls -la
+      run: ls -la && pwd
 
     - name: List k8 files
       run: ls -la k8/
