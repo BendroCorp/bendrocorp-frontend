@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: bendrocorp-frontend-deployment
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -15,10 +15,9 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: bendrocorp-frontend-deployment
-        image: docker.pkg.github.com/bendrocorp/bendrocorp-frontend/bendrocorp-frontend:VERSION_HERE
-        
+        image: docker.pkg.github.com/bendrocorp/bendrocorp-frontend/bendrocorp-frontend:VERSION_HERE #VERSION_HERE
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+          - containerPort: 80
       imagePullSecrets:
       - name: dockerconfigjson-github-com
