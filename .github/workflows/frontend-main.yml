@@ -109,8 +109,8 @@ jobs:
         replace: ${{ env.VERSION }}
 
     - name: Allow unsecure commands
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      run: ACTIONS_ALLOW_UNSECURE_COMMANDS=true
+        
 
     - name: Set up kubectl
       uses: matootie/dokube@v1.3.3
