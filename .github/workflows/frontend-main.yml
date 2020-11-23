@@ -103,9 +103,13 @@ jobs:
     
     - name: Apply Deployment
       run: kubectl apply -f ./k8/bendrocorp_frontend_deployment.yml
+
+    - name: Set Nofication Message
+      run: echo ::set-env name=DISCORD_MESSAGE::${{ env.MY_WORKFLOW_VAR }} of BendroCorp/bendrocorp-frontend has been deployed to Kubernetes
+
     - name: Discord Notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@0.0.2
       with:
-        args: 'BendroCorp/bendrocorp-frontend has been deployed to Kubernetes'
+        args: ${{ env.DISCORD_MESSAGE }}
