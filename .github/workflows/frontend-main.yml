@@ -95,7 +95,7 @@ jobs:
       with:
         fetch-depth: 0 # required for dokku
 
-    - name: Get Version
+    - name: Get & Update Deployment w/ Version
       run: |
        # Strip git ref prefix from version
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
@@ -107,9 +107,11 @@ jobs:
         [ "$VERSION" == "master" ] && VERSION=latest
 
         echo VERSION=$VERSION
-    
-    - name: Update deployment file w/Docker Version
-      run: sed -i 's/VERSION_HERE/'"$VERSION"'/' ./k8/bendrocorp_frontend_deployment.yml
+
+        # Update deployment file w/Docker Version
+        sed -i 's/VERSION_HERE/'"$VERSION"'/' ./k8/bendrocorp_frontend_deployment.yml
+    - name: Cat Deployment
+      run: cat ./k8/bendrocorp_frontend_deployment.yml
     
     # - name: Echo Version
     #   run: echo ${{ env.VERSION }}
@@ -129,8 +131,7 @@ jobs:
     - name: Allow unsecure commands
       run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
 
-    - name: Cat Deployment
-      run: cat ./k8/bendrocorp_frontend_deployment.yml
+    
 
     - name: Set up kubectl
       uses: matootie/dokube@v1.3.3
