@@ -72,32 +72,35 @@ jobs:
       uses: Ilshidur/action-discord@0.0.2
       with:
         args: 'BendroCorp/bendrocorp-frontend has been deployed to the apps server.'
-  # publish:
-  #   needs: build
+  publish:
+    needs: build
 
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-  #   # steps to push to kube
-  #   steps:
-  #   - name: Get Version
-  #     run: |
-  #      VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-  #      # Strip "v" prefix from tag name
-  #       [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+    # we only push tags to kubernetes
+    if: github.event.ref_type == 'tag'
 
-  #       # Use Docker `latest` tag convention
-  #       [ "$VERSION" == "master" ] && VERSION=latest
+    # steps to push to kube
+    steps:
+    - name: Get Version
+      run: |
+       VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+       # Strip "v" prefix from tag name
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
 
-  #   - name: Set up kubectl
-  #     uses: matootie/dokube@v1.3.3
-  #     with:
-  #       personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
-  #       clusterName: my-fabulous-cluster
+        # Use Docker `latest` tag convention
+        [ "$VERSION" == "master" ] && VERSION=latest
 
-  #   - name: Apply Service
-  #     run: kubectl apply -f ./k8/bendrocorp_frontend_service.yml
+    - name: Set up kubectl
+      uses: matootie/dokube@v1.3.3
+      with:
+        personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        clusterName: my-fabulous-cluster
+
+    - name: Apply Service
+      run: kubectl apply -f ./k8/bendrocorp_frontend_service.yml
     
-  #   - name: Apply Deployment
-  #     run: kubectl apply -f ./k8/bendrocorp_frontend_deployment.yml
+    - name: Apply Deployment
+      run: kubectl apply -f ./k8/bendrocorp_frontend_deployment.yml
 
