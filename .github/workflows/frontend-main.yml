@@ -129,7 +129,7 @@ jobs:
       uses: matootie/dokube@v1.3.3
       with:
         personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
-        clusterName: bubble-kube
+        clusterName: bubble-kube-2
 
     - name: Apply Service
       run: kubectl apply -f ./k8/bendrocorp_frontend_service.yml
