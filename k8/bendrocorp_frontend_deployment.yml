@@ -15,7 +15,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: bendrocorp-frontend-deployment
-        image: docker.pkg.github.com/bendrocorp/bendrocorp-frontend/bendrocorp-frontend:VERSION_HERE #VERSION_HERE
+        image:  ghcr.io/bendrocorp/bendrocorp-frontend:VERSION_HERE #VERSION_HERE
         imagePullPolicy: Always
         ports:
           - containerPort: 80
